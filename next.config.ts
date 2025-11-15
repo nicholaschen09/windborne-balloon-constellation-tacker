@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  turbopack: {
+    root: "/Users/nicholaschen/windborne eng challenge"
+  }
 };
 
 export default nextConfig;

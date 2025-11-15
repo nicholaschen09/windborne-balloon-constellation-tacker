@@ -62,7 +62,10 @@ export default function Dashboard({
 
         <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/70 p-8 min-h-[24rem] border border-slate-100">
           {loading ? (
-            <div className="flex items-center justify-center h-96 text-gray-500">Loading balloon data...</div>
+            <div className="flex flex-col items-center justify-center h-96 text-gray-500 space-y-4">
+              <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-gray-900"></div>
+              <p className="text-lg">Loading balloon data...</p>
+            </div>
           ) : (
             <>
               {view === 'map' && (

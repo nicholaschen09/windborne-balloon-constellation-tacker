@@ -20,7 +20,7 @@ export default function Map({ balloons, hazardEvents, height = '500px' }: MapPro
     if (!mapContainerRef.current || mapRef.current) return
     mapRef.current = L.map(mapContainerRef.current, {
       zoomControl: false
-    }).setView([20, 0], 2.5)
+    }).setView([20, 0], 4)
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'

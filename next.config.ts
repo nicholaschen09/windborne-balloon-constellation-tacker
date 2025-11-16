@@ -1,9 +1,5 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  turbopack: {
-    root: "/Users/nicholaschen/windborne eng challenge"
-  }
-};
+const nextConfig: NextConfig = {};
 
 export default nextConfig;

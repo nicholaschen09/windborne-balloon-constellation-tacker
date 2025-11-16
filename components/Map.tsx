@@ -20,7 +20,7 @@ export default function Map({ balloons, hazardEvents, height = '500px' }: MapPro
     if (!mapContainerRef.current || mapRef.current) return
     mapRef.current = L.map(mapContainerRef.current, {
       zoomControl: false
-    }).setView([0, 0], 7)
+    }).setView([0, -10], 3)
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
@@ -99,8 +99,8 @@ export default function Map({ balloons, hazardEvents, height = '500px' }: MapPro
         mapRef.current.setView(bounds.getCenter(), 7)
       } else {
         mapRef.current.fitBounds(bounds, {
-          padding: L.point(50, 50),
-          maxZoom: 7,
+          padding: L.point(20, 20),
+          maxZoom: 3.5,
           duration: 0.5
         })
       }

@@ -5,6 +5,7 @@ const HOUR_FILES = Array.from({ length: 24 }, (_, i) => i.toString().padStart(2,
 const GRID_DEG = 10
 const EARTH_RADIUS_KM = 6371
 const COVERAGE_CELLS = (180 / GRID_DEG) * (360 / GRID_DEG)
+const CACHE_TTL_MS = 60 * 1000 // reuse fleet payload for 60s per server instance
 
 type RawPoint = [number, number, number?]
 
@@ -20,7 +21,27 @@ interface EonetGeometry {
   magnitudeValue?: number | null
 }
 
-export async function getFleetPayload(): Promise<FleetPayload> {
+let cachedPayload: FleetPayload | null = null
+let cacheExpiresAt = 0
+
+interface FleetOptions {
+  forceRefresh?: boolean
+}
+
+export async function getFleetPayload(options: FleetOptions = {}): Promise<FleetPayload> {
+  const forceRefresh = options.forceRefresh ?? false
+  const now = Date.now()
+  if (!forceRefresh && cachedPayload && now < cacheExpiresAt) {
+    return cachedPayload
+  }
+
+  const payload = await buildFleetPayload()
+  cachedPayload = payload
+  cacheExpiresAt = Date.now() + CACHE_TTL_MS
+  return payload
+}
+
+async function buildFleetPayload(): Promise<FleetPayload> {
   const [snapshots, hazardEvents] = await Promise.all([fetchSnapshots(), fetchHazardEvents()])
   const balloons = buildFleetFromSnapshots(snapshots)
   const hazardProximities = matchBalloonsToHazards(balloons, hazardEvents)

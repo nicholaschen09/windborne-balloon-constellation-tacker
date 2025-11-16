@@ -17,7 +17,7 @@ export default function FleetPageClient({ initialPayload }: FleetPageClientProps
     const showSpinner = options?.showSpinner ?? false
     if (showSpinner) setLoading(true)
     try {
-      const response = await fetch('/api/balloons', { cache: 'no-store' })
+      const response = await fetch('/api/balloons?fresh=1', { cache: 'no-store' })
       if (!response.ok) throw new Error('Fleet request failed')
       const data: FleetPayload = await response.json()
       setPayload(data)

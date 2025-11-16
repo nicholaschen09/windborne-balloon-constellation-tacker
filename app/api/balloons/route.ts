@@ -8,6 +8,7 @@ const EARTH_RADIUS_KM = 6371
 const COVERAGE_CELLS = (180 / GRID_DEG) * (360 / GRID_DEG)
 
 type RawPoint = [number, number, number?]
+type ClosestMatch = { balloonId: string; distance: number }
 
 export async function GET() {
   try {
@@ -213,14 +214,14 @@ function matchBalloonsToHazards(balloons: BalloonInsight[], hazardEvents: Hazard
   if (!balloons.length || !hazardEvents.length) return []
   const proximities: HazardProximity[] = []
   hazardEvents.forEach((event) => {
-    let closest: { balloonId: string; distance: number } | null = null
+    let closest: ClosestMatch | null = null
     balloons.forEach((balloon) => {
       const distance = haversineLatLon(event.lat, event.lon, balloon.current.lat, balloon.current.lon)
       if (!closest || distance < closest.distance) {
         closest = { balloonId: balloon.id, distance }
       }
     })
-    if (closest && closest.distance <= 500) {
+    if (isClosestMatch(closest) && closest.distance <= 500) {
       proximities.push({
         eventId: event.id,
         eventTitle: event.title,
@@ -231,6 +232,10 @@ function matchBalloonsToHazards(balloons: BalloonInsight[], hazardEvents: Hazard
     }
   })
   return proximities
+}
+
+function isClosestMatch(candidate: ClosestMatch | null): candidate is ClosestMatch {
+  return candidate !== null
 }
 
 function haversineKm(a: BalloonHistoryPoint, b: BalloonHistoryPoint) {

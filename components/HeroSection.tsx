@@ -63,9 +63,16 @@ export default function HeroSection({ balloons, stats, hazardEvents }: HeroSecti
 }
 
 function StatCard({ label, value }: { label: string; value: string | number }) {
+  const isLoading = value === '--'
   return (
     <div className="bg-white rounded-2xl p-5 text-center shadow-sm border border-slate-100">
-      <div className="text-3xl font-semibold text-slate-900">{value}</div>
+      {isLoading ? (
+        <div className="flex justify-center items-center h-9">
+          <div className="animate-spin rounded-full h-6 w-6 border-2 border-gray-200 border-t-gray-900"></div>
+        </div>
+      ) : (
+        <div className="text-3xl font-semibold text-slate-900">{value}</div>
+      )}
       <div className="text-sm text-slate-500 mt-1">{label}</div>
     </div>
   )

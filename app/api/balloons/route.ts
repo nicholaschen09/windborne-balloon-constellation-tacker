@@ -221,14 +221,17 @@ function matchBalloonsToHazards(balloons: BalloonInsight[], hazardEvents: Hazard
         closest = { balloonId: balloon.id, distance }
       }
     })
-    if (isClosestMatch(closest) && closest.distance <= 500) {
-      proximities.push({
-        eventId: event.id,
-        eventTitle: event.title,
-        category: event.category,
-        balloonId: closest.balloonId,
-        distanceKm: Number(closest.distance.toFixed(1))
-      })
+    if (closest) {
+      const match = closest as ClosestMatch
+      if (match.distance <= 500) {
+        proximities.push({
+          eventId: event.id,
+          eventTitle: event.title,
+          category: event.category,
+          balloonId: match.balloonId,
+          distanceKm: Number(match.distance.toFixed(1))
+        })
+      }
     }
   })
   return proximities

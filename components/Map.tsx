@@ -96,7 +96,7 @@ export default function Map({ balloons, hazardEvents, height = '500px' }: MapPro
       const latLngs = balloons.map((balloon) => [balloon.current.lat, balloon.current.lon]) as [number, number][]
       const bounds = L.latLngBounds(latLngs)
       const currentZoom = mapRef.current.getZoom()
-      const targetZoom = Math.min(mapRef.current.getBoundsZoom(bounds, false, [60, 60]), 4)
+      const targetZoom = Math.min(mapRef.current.getBoundsZoom(bounds, false, L.point(60, 60)), 4)
       if (balloons.length === 1) {
         mapRef.current.setView(bounds.getCenter(), 5)
       } else {

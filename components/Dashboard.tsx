@@ -34,13 +34,13 @@ export default function Dashboard({
   }, [balloons])
 
   return (
-    <section className="py-12 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-8 bg-white">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
           <div>
-            <p className="text-xs uppercase tracking-[0.5em] text-slate-400 mb-3">WindBorne Tracker</p>
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">Live Atmospheric Data</h2>
-            <p className="text-sm text-gray-500">
+            <p className="text-[10px] uppercase tracking-[0.5em] text-slate-400 mb-2">WindBorne Tracker</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Live Atmospheric Data</h2>
+            <p className="text-xs text-gray-500">
               Real-time balloon telemetry with hazard overlays so the UI always reflects what the project captures.
             </p>
           </div>
@@ -50,7 +50,7 @@ export default function Dashboard({
               <button
                 key={mode}
                 onClick={() => setView(mode)}
-                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                className={`px-3 py-1.5 text-sm rounded-lg font-medium transition-colors ${
                   view === mode ? 'bg-gray-900 text-white' : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100'
                 }`}
               >
@@ -60,37 +60,37 @@ export default function Dashboard({
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/70 p-8 min-h-[24rem] border border-slate-100">
+        <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/70 p-6 min-h-[20rem] border border-slate-100">
           {loading ? (
-            <div className="flex flex-col items-center justify-center h-96 text-gray-500 space-y-4">
+            <div className="flex flex-col items-center justify-center h-80 text-gray-500 space-y-3">
               <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-gray-900"></div>
-              <p className="text-lg">Loading balloon data...</p>
+              <p className="text-sm">Loading balloon data...</p>
             </div>
           ) : (
             <>
               {view === 'map' && (
                 <div className="rounded-lg overflow-hidden">
-                  <MapWithNoSSR balloons={balloons} hazardEvents={hazardEvents} height="600px" />
+                  <MapWithNoSSR balloons={balloons} hazardEvents={hazardEvents} height="500px" />
                 </div>
               )}
 
               {view === 'list' && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-[32rem] overflow-y-auto pr-2">
                   {featuredBalloons.map((balloon) => (
-                    <div key={balloon.id} className="border border-slate-100 rounded-2xl p-4 hover:shadow-md transition-shadow bg-slate-50/60">
+                    <div key={balloon.id} className="border border-slate-100 rounded-xl p-3 hover:shadow-md transition-shadow bg-slate-50/60">
                           <div className="flex justify-between items-start mb-3">
                             <div>
-                              <h3 className="font-semibold text-lg">{balloon.id}</h3>
-                          <p className="text-sm text-gray-500">
+                              <h3 className="font-semibold text-sm">{balloon.id}</h3>
+                          <p className="text-xs text-gray-500">
                             {balloon.current.lat.toFixed(2)}°, {balloon.current.lon.toFixed(2)}°
                           </p>
                         </div>
-                        <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full capitalize">
+                        <span className="bg-green-100 text-green-800 text-[10px] px-1.5 py-0.5 rounded-full capitalize">
                           {balloon.hemisphere}
                         </span>
                       </div>
 
-                      <div className="space-y-2 text-sm">
+                      <div className="space-y-1.5 text-xs">
                         <MetricRow label="Altitude" value={`${balloon.current.altitude?.toFixed(1) ?? '--'} km`} />
                         <MetricRow label="24h Drift" value={`${balloon.driftKm.toFixed(1)} km`} />
                         <MetricRow label="Avg Speed" value={`${balloon.avgSpeedKph.toFixed(1)} km/h`} />
@@ -111,7 +111,7 @@ export default function Dashboard({
                   {view === 'analytics' && (
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                       <AnalyticsCard title="Altitude Snapshot">
-                        <div className="space-y-2 text-sm">
+                        <div className="space-y-1.5 text-xs">
                           <MetricRow label="Average altitude" value={`${stats?.avgAltitude?.toFixed(1) ?? '--'} km`} />
                       <MetricRow label="Range" value={`${stats?.minAltitude?.toFixed(1) ?? '--'} – ${stats?.maxAltitude?.toFixed(1) ?? '--'} km`} />
                       <MetricRow label="Data points" value={stats?.dataPoints?.toLocaleString() ?? '--'} />
@@ -120,7 +120,7 @@ export default function Dashboard({
                   </AnalyticsCard>
 
                   <AnalyticsCard title="Hemisphere Split">
-                    <div className="space-y-3 text-sm">
+                    <div className="space-y-2 text-xs">
                       {(['north', 'equatorial', 'south'] as const).map((region) => {
                         const total = stats?.totalBalloons ?? 0
                         const value = stats?.hemisphereSplit?.[region] ?? 0
@@ -142,9 +142,9 @@ export default function Dashboard({
 
                   <AnalyticsCard title="Hazards within 500 km">
                     {hazardProximities.length === 0 ? (
-                      <p className="text-sm text-gray-500">No NASA hazards are currently within 500 km of a balloon.</p>
+                      <p className="text-xs text-gray-500">No NASA hazards are currently within 500 km of a balloon.</p>
                     ) : (
-                      <div className="space-y-3 text-sm">
+                      <div className="space-y-2 text-xs">
                         {hazardProximities.map((match) => (
                           <div key={match.eventId} className="border rounded-lg p-3">
                             <div className="flex justify-between text-sm font-medium">
@@ -162,7 +162,7 @@ export default function Dashboard({
 
                   <AnalyticsCard title="Top Drift Leaders (24h)">
                     {stats?.driftLeaders?.length ? (
-                      <div className="space-y-3 text-sm">
+                      <div className="space-y-2 text-xs">
                         {stats.driftLeaders.map((leader) => (
                           <div key={leader.id} className="flex justify-between border-b pb-2 last:border-b-0 last:pb-0">
                             <span className="font-medium">{leader.id}</span>
@@ -171,7 +171,7 @@ export default function Dashboard({
                         ))}
                       </div>
                     ) : (
-                      <p className="text-sm text-gray-500">No drift data yet.</p>
+                      <p className="text-xs text-gray-500">No drift data yet.</p>
                     )}
                   </AnalyticsCard>
                 </div>
@@ -181,7 +181,7 @@ export default function Dashboard({
         </div>
 
         {lastUpdated && (
-          <p className="text-xs text-gray-400 mt-3 text-right">
+          <p className="text-[10px] text-gray-400 mt-2 text-right">
             refreshed {new Date(lastUpdated).toLocaleString()}
           </p>
         )}
@@ -201,8 +201,8 @@ function MetricRow({ label, value }: { label: string; value: string }) {
 
 function AnalyticsCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-gray-50 rounded-lg p-6 border border-gray-100">
-      <h3 className="text-lg font-semibold mb-4">{title}</h3>
+    <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+      <h3 className="text-sm font-semibold mb-3">{title}</h3>
       {children}
     </div>
   )

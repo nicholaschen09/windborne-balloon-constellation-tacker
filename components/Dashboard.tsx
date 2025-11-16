@@ -80,7 +80,7 @@ export default function Dashboard({
                     <div key={balloon.id} className="border border-slate-100 rounded-xl p-3 hover:shadow-md transition-shadow bg-slate-50/60">
                           <div className="flex justify-between items-start mb-3">
                             <div>
-                              <h3 className="font-semibold text-sm">{balloon.id}</h3>
+                              <h3 className="font-semibold text-sm text-gray-900">{balloon.id}</h3>
                           <p className="text-xs text-gray-500">
                             {balloon.current.lat.toFixed(2)}°, {balloon.current.lon.toFixed(2)}°
                           </p>

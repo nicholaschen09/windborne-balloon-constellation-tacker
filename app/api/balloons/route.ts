@@ -8,7 +8,6 @@ const EARTH_RADIUS_KM = 6371
 const COVERAGE_CELLS = (180 / GRID_DEG) * (360 / GRID_DEG)
 
 type RawPoint = [number, number, number?]
-type ClosestMatch = { balloonId: string; distance: number }
 
 export async function GET() {
   try {
@@ -213,32 +212,31 @@ function isValidGeometry(geo: EonetGeometry): geo is EonetGeometry & { coordinat
 function matchBalloonsToHazards(balloons: BalloonInsight[], hazardEvents: HazardEvent[]): HazardProximity[] {
   if (!balloons.length || !hazardEvents.length) return []
   const proximities: HazardProximity[] = []
+
   hazardEvents.forEach((event) => {
-    let closest: ClosestMatch | null = null
+    let closestId: string | null = null
+    let closestDistance = Number.POSITIVE_INFINITY
+
     balloons.forEach((balloon) => {
       const distance = haversineLatLon(event.lat, event.lon, balloon.current.lat, balloon.current.lon)
-      if (!closest || distance < closest.distance) {
-        closest = { balloonId: balloon.id, distance }
+      if (distance < closestDistance) {
+        closestDistance = distance
+        closestId = balloon.id
       }
     })
-    if (closest) {
-      const match = closest as ClosestMatch
-      if (match.distance <= 500) {
-        proximities.push({
-          eventId: event.id,
-          eventTitle: event.title,
-          category: event.category,
-          balloonId: match.balloonId,
-          distanceKm: Number(match.distance.toFixed(1))
-        })
-      }
+
+    if (closestId && closestDistance <= 500) {
+      proximities.push({
+        eventId: event.id,
+        eventTitle: event.title,
+        category: event.category,
+        balloonId: closestId,
+        distanceKm: Number(closestDistance.toFixed(1))
+      })
     }
   })
-  return proximities
-}
 
-function isClosestMatch(candidate: ClosestMatch | null): candidate is ClosestMatch {
-  return candidate !== null
+  return proximities
 }
 
 function haversineKm(a: BalloonHistoryPoint, b: BalloonHistoryPoint) {

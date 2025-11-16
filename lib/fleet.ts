@@ -1,4 +1,11 @@
-import { BalloonHistoryPoint, BalloonInsight, FleetPayload, FleetStats, HazardEvent, HazardProximity } from '@/lib/types'
+import {
+  BalloonHistoryPoint,
+  BalloonInsight,
+  FleetPayload,
+  FleetStats,
+  HazardEvent,
+  HazardProximity
+} from '@/lib/types'
 
 const WINDBORNE_BASE_URL = 'https://a.windbornesystems.com/treasure'
 const HOUR_FILES = Array.from({ length: 24 }, (_, i) => i.toString().padStart(2, '0'))
@@ -221,7 +228,11 @@ async function fetchHazardEvents(): Promise<HazardEvent[]> {
 }
 
 function isValidGeometry(geo: EonetGeometry): geo is EonetGeometry & { coordinates: [number, number] } {
-  return Array.isArray(geo.coordinates) && geo.coordinates.length >= 2 && geo.coordinates.every((value) => typeof value === 'number')
+  return (
+    Array.isArray(geo.coordinates) &&
+    geo.coordinates.length >= 2 &&
+    geo.coordinates.every((value) => typeof value === 'number')
+  )
 }
 
 function matchBalloonsToHazards(balloons: BalloonInsight[], hazardEvents: HazardEvent[]): HazardProximity[] {
@@ -264,9 +275,7 @@ function haversineLatLon(lat1: number, lon1: number, lat2: number, lon2: number)
   const dLon = toRad(lon2 - lon1)
   const rLat1 = toRad(lat1)
   const rLat2 = toRad(lat2)
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(rLat1) * Math.cos(rLat2) * Math.sin(dLon / 2) ** 2
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(rLat1) * Math.cos(rLat2) * Math.sin(dLon / 2) ** 2
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
   return EARTH_RADIUS_KM * c
 }

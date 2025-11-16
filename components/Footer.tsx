@@ -22,7 +22,6 @@ export default function Footer() {
             <ExternalLink href="https://github.com/nicholaschen">GitHub</ExternalLink>
             <ExternalLink href="https://twitter.com/nicholaschen">Twitter</ExternalLink>
           </div>
-
         </div>
       </div>
     </footer>

@@ -40,7 +40,9 @@ export default function Map({ balloons, hazardEvents, height = '500px' }: MapPro
   }, [])
 
   const altitudeDomain = useMemo(() => {
-    const altitudes = balloons.map((balloon) => balloon.current.altitude).filter((alt): alt is number => typeof alt === 'number')
+    const altitudes = balloons
+      .map((balloon) => balloon.current.altitude)
+      .filter((alt): alt is number => typeof alt === 'number')
     if (!altitudes.length) return [0, 25]
     return [Math.min(...altitudes), Math.max(...altitudes)]
   }, [balloons])
@@ -60,20 +62,25 @@ export default function Map({ balloons, hazardEvents, height = '500px' }: MapPro
       })
 
       const marker = L.marker([balloon.current.lat, balloon.current.lon], { icon })
-        .bindPopup(`
+        .bindPopup(
+          `
           <strong>${balloon.id}</strong><br/>
           Alt: ${balloon.current.altitude?.toFixed(1) ?? '--'} km<br/>
           Drift: ${balloon.driftKm.toFixed(1)} km / 24h
-        `)
+        `
+        )
         .addTo(mapRef.current!)
       markerLayersRef.current.push(marker)
 
       if (balloon.history.length > 1) {
-        const path = L.polyline(balloon.history.map((p) => [p.lat, p.lon]), {
-          color,
-          weight: 1.2,
-          opacity: 0.35
-        }).addTo(mapRef.current!)
+        const path = L.polyline(
+          balloon.history.map((p) => [p.lat, p.lon]),
+          {
+            color,
+            weight: 1.2,
+            opacity: 0.35
+          }
+        ).addTo(mapRef.current!)
         markerLayersRef.current.push(path)
       }
     })

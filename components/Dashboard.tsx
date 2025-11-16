@@ -51,7 +51,9 @@ export default function Dashboard({
                 key={mode}
                 onClick={() => setView(mode)}
                 className={`px-3 py-1.5 text-sm rounded-lg font-medium transition-colors ${
-                  view === mode ? 'bg-gray-900 text-white' : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100'
+                  view === mode
+                    ? 'bg-gray-900 text-white'
+                    : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100'
                 }`}
               >
                 {mode.charAt(0).toUpperCase() + mode.slice(1)} View
@@ -77,10 +79,13 @@ export default function Dashboard({
               {view === 'list' && (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-h-[32rem] overflow-y-auto pr-2">
                   {featuredBalloons.map((balloon) => (
-                    <div key={balloon.id} className="border border-slate-100 rounded-xl p-3 hover:shadow-md transition-shadow bg-slate-50/60">
-                          <div className="flex justify-between items-start mb-3">
-                            <div>
-                              <h3 className="font-semibold text-sm text-gray-900">{balloon.id}</h3>
+                    <div
+                      key={balloon.id}
+                      className="border border-slate-100 rounded-xl p-3 hover:shadow-md transition-shadow bg-slate-50/60"
+                    >
+                      <div className="flex justify-between items-start mb-3">
+                        <div>
+                          <h3 className="font-semibold text-sm text-gray-900">{balloon.id}</h3>
                           <p className="text-xs text-gray-500">
                             {balloon.current.lat.toFixed(2)}°, {balloon.current.lon.toFixed(2)}°
                           </p>
@@ -108,12 +113,15 @@ export default function Dashboard({
                 </div>
               )}
 
-                  {view === 'analytics' && (
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                      <AnalyticsCard title="Altitude Snapshot">
-                        <div className="space-y-1.5 text-xs">
-                          <MetricRow label="Average altitude" value={`${stats?.avgAltitude?.toFixed(1) ?? '--'} km`} />
-                      <MetricRow label="Range" value={`${stats?.minAltitude?.toFixed(1) ?? '--'} – ${stats?.maxAltitude?.toFixed(1) ?? '--'} km`} />
+              {view === 'analytics' && (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <AnalyticsCard title="Altitude Snapshot">
+                    <div className="space-y-1.5 text-xs">
+                      <MetricRow label="Average altitude" value={`${stats?.avgAltitude?.toFixed(1) ?? '--'} km`} />
+                      <MetricRow
+                        label="Range"
+                        value={`${stats?.minAltitude?.toFixed(1) ?? '--'} – ${stats?.maxAltitude?.toFixed(1) ?? '--'} km`}
+                      />
                       <MetricRow label="Data points" value={stats?.dataPoints?.toLocaleString() ?? '--'} />
                       <MetricRow label="Grid coverage (10°)" value={`${stats?.coveragePercent?.toFixed(1) ?? '--'}%`} />
                     </div>
@@ -129,7 +137,9 @@ export default function Dashboard({
                           <div key={region}>
                             <div className="flex justify-between text-gray-600 capitalize">
                               <span>{region}</span>
-                              <span>{value} ({pct}%)</span>
+                              <span>
+                                {value} ({pct}%)
+                              </span>
                             </div>
                             <div className="w-full h-2 bg-gray-200 rounded">
                               <div className="h-2 bg-gray-900 rounded" style={{ width: `${pct}%` }} />

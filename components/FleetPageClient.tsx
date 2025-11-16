@@ -38,11 +38,7 @@ export default function FleetPageClient({ initialPayload }: FleetPageClientProps
 
   return (
     <>
-      <HeroSection
-        balloons={balloons}
-        stats={payload?.stats}
-        hazardEvents={payload?.hazardEvents ?? []}
-      />
+      <HeroSection balloons={balloons} stats={payload?.stats} hazardEvents={payload?.hazardEvents ?? []} />
       <Dashboard
         balloons={balloons}
         hazardEvents={payload?.hazardEvents ?? []}

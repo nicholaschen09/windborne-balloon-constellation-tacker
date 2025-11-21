@@ -114,7 +114,7 @@ export default function Dashboard({
               )}
 
               {view === 'analytics' && (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-h-[32rem] overflow-y-auto pr-2">
                   <AnalyticsCard title="Altitude Snapshot">
                     <div className="space-y-1.5 text-xs">
                       <MetricRow label="Average altitude" value={`${stats?.avgAltitude?.toFixed(1) ?? '--'} km`} />
@@ -156,8 +156,8 @@ export default function Dashboard({
                     ) : (
                       <div className="space-y-2 text-xs">
                         {hazardProximities.map((match) => (
-                          <div key={match.eventId} className="border rounded-lg p-3">
-                            <div className="flex justify-between text-sm font-medium">
+                          <div key={match.eventId} className="border border-gray-200 rounded-lg p-3">
+                            <div className="flex justify-between text-sm font-medium text-gray-900">
                               <span>{match.eventTitle}</span>
                               <span>{match.distanceKm} km</span>
                             </div>
@@ -174,7 +174,7 @@ export default function Dashboard({
                     {stats?.driftLeaders?.length ? (
                       <div className="space-y-2 text-xs">
                         {stats.driftLeaders.map((leader) => (
-                          <div key={leader.id} className="flex justify-between border-b pb-2 last:border-b-0 last:pb-0">
+                          <div key={leader.id} className="flex justify-between border-b border-gray-200 pb-2 last:border-b-0 last:pb-0 text-gray-900">
                             <span className="font-medium">{leader.id}</span>
                             <span>{leader.driftKm} km</span>
                           </div>
@@ -212,7 +212,7 @@ function MetricRow({ label, value }: { label: string; value: string }) {
 function AnalyticsCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
-      <h3 className="text-sm font-semibold mb-3">{title}</h3>
+      <h3 className="text-sm font-semibold mb-3 text-gray-900">{title}</h3>
       {children}
     </div>
   )
